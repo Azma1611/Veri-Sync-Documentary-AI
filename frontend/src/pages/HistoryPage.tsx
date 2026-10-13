@@ -1,10 +1,11 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Search, Eye, Calendar, FileCheck, TrendingUp, Filter } from 'lucide-react';
 import { StatusBadge } from '../components/common/StatusBadge';
 import { EmptyState } from '../components/common/EmptyState';
 import { NoticeBanner } from '../components/common/NoticeBanner';
 import { Modal } from '../components/common/Modal';
 import { mockHistoryItems } from '../data/mockData';
+import { fetchAnalysisHistory } from '../services/api';
 import type { HistoryItem } from '../types';
 
 export const HistoryPage: React.FC = () => {
@@ -12,23 +13,30 @@ export const HistoryPage: React.FC = () => {
   const [typeFilter, setTypeFilter] = useState<'all' | 'resume' | 'verification'>('all');
   const [statusFilter, setStatusFilter] = useState<string>('all');
   const [selectedItem, setSelectedItem] = useState<HistoryItem | null>(null);
+  const [items, setItems] = useState<HistoryItem[]>(mockHistoryItems);
+  const [isLoading, setIsLoading] = useState(false);
 
-  const filteredItems = useMemo(() => {
-    return mockHistoryItems.filter((item) => {
-      if (typeFilter === 'resume' && item.analysisType !== 'Resume & Career Fit') return false;
-      if (typeFilter === 'verification' && item.analysisType !== 'Employment Document Verification') return false;
-      if (statusFilter !== 'all' && item.status !== statusFilter) return false;
-      if (searchQuery.trim()) {
-        const q = searchQuery.toLowerCase();
-        if (
-          !item.documentName.toLowerCase().includes(q) &&
-          !item.summary.toLowerCase().includes(q) &&
-          !item.domain.toLowerCase().includes(q)
-        ) return false;
-      }
-      return true;
-    });
+  useEffect(() => {
+    let isMounted = true;
+    setIsLoading(true);
+    fetchAnalysisHistory({ type: typeFilter, status: statusFilter, searchQuery })
+      .then((res) => {
+        if (isMounted && res.data) {
+          setItems(res.data);
+        }
+      })
+      .catch((err) => {
+        console.warn('Failed to load history from API:', err);
+      })
+      .finally(() => {
+        if (isMounted) setIsLoading(false);
+      });
+    return () => {
+      isMounted = false;
+    };
   }, [searchQuery, typeFilter, statusFilter]);
+
+  const filteredItems = items;
 
   const handleClearFilters = () => {
     setSearchQuery('');
@@ -94,8 +102,14 @@ export const HistoryPage: React.FC = () => {
         </div>
       </div>
 
-      {/* Table */}
-      {filteredItems.length > 0 ? (
+      {/* Table / Loading State */}
+      {isLoading ? (
+        <div className="glass-panel rounded-2xl border border-white/80 shadow-md p-10 text-center">
+          <p className="text-xs font-semibold text-[#64748B] animate-pulse">
+            Syncing audit history records...
+          </p>
+        </div>
+      ) : filteredItems.length > 0 ? (
         <div className="glass-panel rounded-2xl border border-white/80 shadow-lg overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs">

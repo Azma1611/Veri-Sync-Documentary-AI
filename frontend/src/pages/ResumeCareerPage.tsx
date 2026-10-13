@@ -65,6 +65,7 @@ export const ResumeCareerPage: React.FC = () => {
         careerDomain: selectedDomain,
         targetRole: targetRole.trim() || undefined,
         targetCompany: targetCompany.trim() || undefined,
+        jobDescription: jobDescriptionText.trim() || undefined,
       });
       setAnalysisResult(response.data);
     } catch (error) {

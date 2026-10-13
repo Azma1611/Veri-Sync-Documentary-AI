@@ -23,7 +23,7 @@ import { Modal } from '../components/common/Modal';
 import { CompletenessChecklist } from '../components/common/CompletenessChecklist';
 import type { ChecklistItem } from '../components/common/CompletenessChecklist';
 import { ExportReportModal } from '../components/common/ExportReportModal';
-import { verifyEmploymentDocuments } from '../services/api';
+import { verifyEmploymentDocuments, submitReviewerDecision } from '../services/api';
 import type {
   EmploymentDocType,
   UploadedFileItem,
@@ -105,6 +105,9 @@ export const DocumentVerificationPage: React.FC = () => {
       ...prev,
       [findingId]: { status, notes },
     }));
+    submitReviewerDecision(findingId, status, notes).catch((err) => {
+      console.warn('Failed to persist reviewer decision to audit trail:', err);
+    });
   };
 
   const checklistItems: ChecklistItem[] = [
