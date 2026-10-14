@@ -108,7 +108,7 @@ Install the tools required by the project:
 
 * Node.js and npm
 * Git
-* A code editor such as Visual Studio Code
+* A code editor such as Antigravity
 * Python and backend dependencies, if the backend uses Python
 
 ### 1. Clone the repository
