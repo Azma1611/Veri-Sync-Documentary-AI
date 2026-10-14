@@ -10,10 +10,15 @@ import {
   FileText,
   Award,
   Receipt,
-  Stethoscope,
   Briefcase,
+  ClipboardCheck,
+  Code2,
+  Database,
+  Coins,
+  Layout,
 } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
+import type { CareerDomain, DocumentDomain } from '../types';
 
 export interface WorkflowDefinition {
   id: string;
@@ -59,12 +64,12 @@ export const platformDomains: DomainDefinition[] = [
     icon: Users,
     colorName: 'indigo',
     accentClass: {
-      bgLight: 'bg-indigo-50/60',
-      border: 'border-indigo-100 hover:border-indigo-300',
-      text: 'text-[#4338CA]',
-      badgeBg: 'bg-indigo-50 border-indigo-200',
-      badgeText: 'text-[#4338CA]',
-      iconBg: 'bg-indigo-500 text-white',
+      bgLight: 'bg-indigo-950/40',
+      border: 'border-indigo-500/30 hover:border-indigo-400/60',
+      text: 'text-[#62D8FF]',
+      badgeBg: 'bg-indigo-900/50 border-indigo-500/30',
+      badgeText: 'text-[#62D8FF]',
+      iconBg: 'bg-indigo-600 text-white',
     },
     supportedDocsSample: [
       'Offer Letters (Candidate & HR Copy)',
@@ -117,21 +122,88 @@ export const platformDomains: DomainDefinition[] = [
     ],
   },
   {
+    id: 'healthcare-admin',
+    name: 'Healthcare Administration',
+    shortName: 'Healthcare Admin',
+    description:
+      'Compare patient registration forms, discharge summaries, hospital invoices, and insurance claims. Reconciles patient IDs, service dates, billing codes, and policy coverage amounts. (Non-clinical administrative check only; not medical advice).',
+    status: 'active',
+    icon: HeartPulse,
+    colorName: 'teal',
+    accentClass: {
+      bgLight: 'bg-teal-950/40',
+      border: 'border-teal-500/30 hover:border-teal-400/60',
+      text: 'text-teal-300',
+      badgeBg: 'bg-teal-900/50 border-teal-500/30',
+      badgeText: 'text-teal-300',
+      iconBg: 'bg-teal-600 text-white',
+    },
+    supportedDocsSample: [
+      'Patient Registration Forms',
+      'Inpatient Discharge Summaries',
+      'Hospital Billing Invoices',
+      'Health Insurance Claims & Pre-Auth Forms',
+    ],
+    completenessChecklist: [
+      { id: 'health-1', label: 'Patient MRN & Legal Identifier Parity', required: true, description: 'Medical Record Number matches across admission and claim records' },
+      { id: 'health-2', label: 'Admission & Discharge Date Alignment', required: true, description: 'Hospital stay dates match invoice billing line item dates' },
+      { id: 'health-3', label: 'Itemized Treatment Amount Reconciliation', required: true, description: 'Hospital invoice total aligns with insurance claim submitted amount' },
+      { id: 'health-4', label: 'Emergency Contact & Attending Physician ID', required: true, description: 'Designated next-of-kin contact and physician NPI on file' },
+      { id: 'health-5', label: 'Patient Financial Responsibility Consent', required: false, description: 'Signed assignment of insurance benefits addendum' },
+    ],
+    workflows: [
+      {
+        id: 'health-doc-comparison',
+        name: 'Medical Administration Document Comparison',
+        tagline: 'Reconcile hospital invoice, insurance claim & discharge records',
+        description:
+          'Compares patient identifiers, treatment dates, and billed versus claimed amounts across hospital invoices, discharge summaries, and insurance filings to identify billing variances for administrative review.',
+        status: 'active',
+        documentTypes: ['Hospital Invoices', 'Insurance Claims', 'Discharge Summaries', 'Patient Forms'],
+        keyChecks: [
+          'Patient MRN and demographic alignment',
+          'Service & discharge date boundary parity',
+          'Billed amount vs claim requested total reconciliation',
+          'Billing code & procedure description consistency',
+        ],
+        path: '/verify/employment/documents?domain=healthcare-admin',
+        icon: Receipt,
+      },
+      {
+        id: 'health-patient-reg',
+        name: 'Patient Registration Completeness',
+        tagline: 'Check required identifiers, insurance cards & consent signatures',
+        description:
+          'Verifies that mandatory patient intake fields, emergency contact details, primary insurance policy IDs, and HIPAA consent signatures are present and consistent.',
+        status: 'active',
+        documentTypes: ['Patient Registration Forms', 'Insurance Card Copies', 'HIPAA Consent Addenda'],
+        keyChecks: [
+          'Mandatory demographic & contact validation',
+          'Insurance subscriber policy ID verification',
+          'Emergency contact completeness',
+          'HIPAA authorization signature verification',
+        ],
+        path: '/verify/employment/documents?domain=healthcare-admin&workflow=patient-reg',
+        icon: ClipboardCheck,
+      },
+    ],
+  },
+  {
     id: 'education',
     name: 'Education',
     shortName: 'Education',
     description:
-      'Inspect academic transcripts, degree certificates, institution accreditation, and credit transfer equivalencies across institutions.',
+      'Inspect academic transcripts, degree certificates, institution accreditation, and credit transfer equivalencies across institutions. (Prototype / Roadmap)',
     status: 'coming_soon',
     icon: GraduationCap,
     colorName: 'violet',
     accentClass: {
-      bgLight: 'bg-violet-50/50',
-      border: 'border-violet-100',
-      text: 'text-[#8B5CF6]',
-      badgeBg: 'bg-slate-100 border-slate-200',
-      badgeText: 'text-slate-600',
-      iconBg: 'bg-violet-500 text-white',
+      bgLight: 'bg-violet-950/30',
+      border: 'border-violet-500/20',
+      text: 'text-violet-300',
+      badgeBg: 'bg-violet-900/30 border-violet-500/20',
+      badgeText: 'text-violet-300',
+      iconBg: 'bg-violet-600 text-white',
     },
     supportedDocsSample: [
       'Official Academic Transcripts',
@@ -174,17 +246,17 @@ export const platformDomains: DomainDefinition[] = [
     name: 'Government & Public Services',
     shortName: 'Gov & Public',
     description:
-      'Verify civil registry records, identity documentation, public tender applications, and municipal permit submissions for regulatory alignment.',
+      'Verify civil registry records, identity documentation, public tender applications, and municipal permit submissions for regulatory alignment. (Prototype / Roadmap)',
     status: 'coming_soon',
     icon: Landmark,
     colorName: 'navy',
     accentClass: {
-      bgLight: 'bg-slate-50',
-      border: 'border-slate-200',
-      text: 'text-[#172554]',
-      badgeBg: 'bg-slate-100 border-slate-200',
-      badgeText: 'text-slate-600',
-      iconBg: 'bg-[#172554] text-white',
+      bgLight: 'bg-slate-900/40',
+      border: 'border-slate-700/40',
+      text: 'text-slate-300',
+      badgeBg: 'bg-slate-800/40 border-slate-700/40',
+      badgeText: 'text-slate-300',
+      iconBg: 'bg-slate-700 text-white',
     },
     supportedDocsSample: [
       'Civil Registry Certificates',
@@ -215,17 +287,17 @@ export const platformDomains: DomainDefinition[] = [
     name: 'Banking & Finance',
     shortName: 'Banking & Finance',
     description:
-      'Cross-audit commercial loan applications, mortgage covenants, audited balance sheets, and collateral deeds to highlight data variances.',
+      'Cross-audit commercial loan applications, mortgage covenants, audited balance sheets, and collateral deeds to highlight data variances. (Prototype / Roadmap)',
     status: 'coming_soon',
     icon: Receipt,
     colorName: 'teal',
     accentClass: {
-      bgLight: 'bg-teal-50/50',
-      border: 'border-teal-100',
-      text: 'text-[#0D9488]',
-      badgeBg: 'bg-slate-100 border-slate-200',
-      badgeText: 'text-slate-600',
-      iconBg: 'bg-teal-600 text-white',
+      bgLight: 'bg-emerald-950/30',
+      border: 'border-emerald-500/20',
+      text: 'text-emerald-300',
+      badgeBg: 'bg-emerald-900/30 border-emerald-500/20',
+      badgeText: 'text-emerald-300',
+      iconBg: 'bg-emerald-600 text-white',
     },
     supportedDocsSample: [
       'Commercial Loan Sanction Letters',
@@ -252,61 +324,20 @@ export const platformDomains: DomainDefinition[] = [
     ],
   },
   {
-    id: 'healthcare-admin',
-    name: 'Healthcare Administration',
-    shortName: 'Healthcare Admin',
-    description:
-      'Review clinical practitioner licenses, hospital privileging files, clinical trial protocols, and medical billing disclosures for compliance.',
-    status: 'coming_soon',
-    icon: HeartPulse,
-    colorName: 'rose',
-    accentClass: {
-      bgLight: 'bg-rose-50/50',
-      border: 'border-rose-100',
-      text: 'text-rose-600',
-      badgeBg: 'bg-slate-100 border-slate-200',
-      badgeText: 'text-slate-600',
-      iconBg: 'bg-rose-500 text-white',
-    },
-    supportedDocsSample: [
-      'Medical Practitioner Board Licenses',
-      'Institutional Review Board (IRB) Consents',
-      'Hospital Privileging & Credentialing Packets',
-      'Insurance Pre-Authorization Summaries',
-    ],
-    completenessChecklist: [
-      { id: 'health-1', label: 'Active Medical Board Registration', required: true, description: 'Board registration number and expiration date' },
-      { id: 'health-2', label: 'HIPAA & Patient Consent Addendum', required: true, description: 'Signed privacy disclosure statement' },
-    ],
-    workflows: [
-      {
-        id: 'health-credentialing',
-        name: 'Practitioner Credentialing Audit',
-        tagline: 'License, malpractice coverage & hospital privileging review',
-        description:
-          'Cross-checks medical board registration records against malpractice insurance schedules and institutional privileges.',
-        status: 'coming_soon',
-        documentTypes: ['Medical Licenses', 'Malpractice Coverage', 'Privileging Forms'],
-        keyChecks: ['License expiration dates', 'Specialty board certification status'],
-        icon: Stethoscope,
-      },
-    ],
-  },
-  {
     id: 'business-legal',
     name: 'Business & Legal Documents',
     shortName: 'Business & Legal',
     description:
-      'Harmonize Master Services Agreements (MSAs), Statements of Work (SOWs), Non-Disclosure Agreements, and procurement terms.',
+      'Harmonize Master Services Agreements (MSAs), Statements of Work (SOWs), Non-Disclosure Agreements, and procurement terms. (Prototype / Roadmap)',
     status: 'coming_soon',
     icon: Scale,
     colorName: 'amber',
     accentClass: {
-      bgLight: 'bg-amber-50/50',
-      border: 'border-amber-100',
-      text: 'text-amber-700',
-      badgeBg: 'bg-slate-100 border-slate-200',
-      badgeText: 'text-slate-600',
+      bgLight: 'bg-amber-950/30',
+      border: 'border-amber-500/20',
+      text: 'text-amber-300',
+      badgeBg: 'bg-amber-900/30 border-amber-500/20',
+      badgeText: 'text-amber-300',
       iconBg: 'bg-amber-600 text-white',
     },
     supportedDocsSample: [
@@ -334,3 +365,30 @@ export const platformDomains: DomainDefinition[] = [
     ],
   },
 ];
+
+export interface CareerDomainOption {
+  id: CareerDomain;
+  label: string;
+  icon: LucideIcon;
+  color: string;
+  glow: string;
+}
+
+export const careerDomains: CareerDomainOption[] = [
+  { id: 'software-engineering', label: 'Software Eng.', icon: Code2, color: 'text-[#62D8FF]', glow: 'shadow-[0_0_12px_rgba(98,216,255,0.3)]' },
+  { id: 'data-ai', label: 'Data & AI', icon: Database, color: 'text-violet-300', glow: 'shadow-[0_0_12px_rgba(139,92,246,0.3)]' },
+  { id: 'finance-fintech', label: 'Finance', icon: Coins, color: 'text-emerald-300', glow: 'shadow-[0_0_12px_rgba(52,211,153,0.3)]' },
+  { id: 'product-design', label: 'Product & Design', icon: Layout, color: 'text-amber-300', glow: 'shadow-[0_0_12px_rgba(251,191,36,0.3)]' },
+  { id: 'healthcare-biotech', label: 'Healthcare', icon: HeartPulse, color: 'text-teal-300', glow: 'shadow-[0_0_12px_rgba(45,212,191,0.3)]' },
+  { id: 'operations-hr', label: 'Operations & HR', icon: Briefcase, color: 'text-indigo-300', glow: 'shadow-[0_0_12px_rgba(165,180,252,0.3)]' },
+];
+
+export const documentDomains: { id: DocumentDomain; label: string; description: string }[] = [
+  { id: 'employment-hr', label: 'Employment & HR', description: 'Cross-reference offer letters, contracts, compensation annexures, and HR policies' },
+  { id: 'healthcare-admin', label: 'Healthcare Administration', description: 'Reconcile hospital invoices, insurance claims, discharge summaries, and patient registration forms' },
+  { id: 'education', label: 'Education (Roadmap)', description: 'Inspect academic transcripts, degree certificates, and credit transfer equivalencies' },
+  { id: 'government-public', label: 'Government & Public (Roadmap)', description: 'Civil registry records, identity credentials, and municipal permits' },
+  { id: 'banking-finance', label: 'Banking & Finance (Roadmap)', description: 'Commercial loan sanction letters, mortgages, and audited balance sheets' },
+  { id: 'business-legal', label: 'Business & Legal (Roadmap)', description: 'Master services agreements, vendor SOWs, and NDAs' },
+];
+

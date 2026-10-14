@@ -1,5 +1,5 @@
 import React from 'react';
-import { Loader2, CheckCircle2 } from 'lucide-react';
+import { Loader2, CheckCircle2, Sparkles } from 'lucide-react';
 
 interface LoadingStateProps {
   title: string;
@@ -10,29 +10,40 @@ interface LoadingStateProps {
 
 export const LoadingState: React.FC<LoadingStateProps> = ({
   title,
-  description = 'Processing demonstration data across verification matrices...',
+  description = 'Processing evidence-linked verification matrices...',
   steps = [
-    'Parsing document tokens and optical layout',
-    'Extracting contractual clauses and entity metadata',
-    'Synthesizing cross-document discrepancy matrix',
+    'Parsing document tokens and layout structures',
+    'Extracting clauses, boundaries, and entity metadata',
+    'Reconciling cross-document values and completeness rules',
+    'Generating audit evidence citations and discrepancy report',
   ],
-  currentStepIndex = 1,
+  currentStepIndex = 2,
 }) => {
   return (
-    <div className="py-12 px-8 rounded-2xl border border-[#E4E8F2] bg-white text-center flex flex-col items-center justify-center shadow-sm">
+    <div className="py-12 px-8 rounded-2xl glass-panel text-center flex flex-col items-center justify-center shadow-2xl relative overflow-hidden">
+      {/* Background soft glow */}
+      <div className="absolute w-48 h-48 bg-[#438AFF]/15 rounded-full blur-3xl pointer-events-none" />
+
       {/* Animated icon */}
-      <div className="relative mb-5">
-        <div className="w-14 h-14 rounded-2xl brand-gradient-subtle border border-indigo-100 flex items-center justify-center">
-          <Loader2 className="w-7 h-7 text-[#4338CA] animate-spin" strokeWidth={2} />
+      <div className="relative mb-5 z-10">
+        <div className="w-16 h-16 rounded-2xl bg-gradient-to-tr from-[#4338CA]/40 to-[#438AFF]/30 border border-[#62D8FF]/30 flex items-center justify-center shadow-[0_0_25px_rgba(67,138,255,0.3)]">
+          <Loader2 className="w-8 h-8 text-[#62D8FF] animate-spin" strokeWidth={2} />
         </div>
-        <div className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-[#4338CA] border-2 border-white animate-pulse" />
+        <div className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-[#2DD4BF] border-2 border-[#080D20] shadow-[0_0_8px_#2DD4BF] animate-pulse" />
       </div>
 
-      <h3 className="text-base font-bold text-[#172554] mb-1">{title}</h3>
-      <p className="text-xs text-[#64748B] mb-6 max-w-xs leading-relaxed">{description}</p>
+      <h3 className="text-lg font-extrabold text-white mb-1.5 tracking-tight z-10">{title}</h3>
+      <p className="text-xs text-[#94A3B8] mb-6 max-w-sm leading-relaxed z-10">{description}</p>
 
       {steps.length > 0 && (
-        <div className="w-full max-w-sm space-y-2.5 text-left bg-[#F5F7FF] p-4 rounded-xl border border-[#E4E8F2]">
+        <div className="w-full max-w-md space-y-3 text-left bg-black/30 p-5 rounded-2xl border border-white/10 backdrop-blur-md z-10">
+          <div className="flex items-center justify-between text-[11px] font-bold text-[#94A3B8] uppercase tracking-wider mb-1">
+            <span>Execution Pipeline</span>
+            <span className="text-[#62D8FF] flex items-center gap-1 font-semibold">
+              <Sparkles className="w-3 h-3" /> Step {currentStepIndex + 1} of {steps.length}
+            </span>
+          </div>
+
           {steps.map((step, idx) => {
             const isCompleted = idx < currentStepIndex;
             const isCurrent = idx === currentStepIndex;
@@ -40,18 +51,18 @@ export const LoadingState: React.FC<LoadingStateProps> = ({
             return (
               <div key={idx} className="flex items-center gap-3 text-xs">
                 {isCompleted ? (
-                  <CheckCircle2 className="w-4 h-4 text-[#0D9488] shrink-0" />
+                  <CheckCircle2 className="w-4 h-4 text-teal-400 shrink-0" />
                 ) : isCurrent ? (
-                  <Loader2 className="w-4 h-4 text-[#4338CA] animate-spin shrink-0" />
+                  <Loader2 className="w-4 h-4 text-[#62D8FF] animate-spin shrink-0" />
                 ) : (
-                  <div className="w-4 h-4 rounded-full border-2 border-[#C7D2FE] shrink-0" />
+                  <div className="w-4 h-4 rounded-full border border-white/20 shrink-0" />
                 )}
                 <span
                   className={`${
                     isCurrent
-                      ? 'font-semibold text-[#172554]'
+                      ? 'font-bold text-white'
                       : isCompleted
-                      ? 'text-[#94A3B8] line-through'
+                      ? 'text-[#94A3B8]/70 line-through'
                       : 'text-[#94A3B8]'
                   }`}
                 >

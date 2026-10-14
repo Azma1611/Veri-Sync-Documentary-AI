@@ -35,6 +35,15 @@ export const mockRecentActivity: RecentActivityItem[] = [
   },
   {
     id: 'act-3',
+    title: 'Healthcare Claim Billing Audit',
+    subtitle: 'Hospital_Invoice_9842.pdf vs Insurance_Claim.pdf',
+    timestamp: '1 hour ago',
+    type: 'verification',
+    status: 'warning',
+    statusText: 'Amount & Date Discrepancy',
+  },
+  {
+    id: 'act-4',
     title: 'Executive Contract Verification',
     subtitle: 'Director_Agreement.pdf vs Compensation_Annex.pdf',
     timestamp: '2 hours ago',
@@ -43,7 +52,7 @@ export const mockRecentActivity: RecentActivityItem[] = [
     statusText: 'Verified Clean',
   },
   {
-    id: 'act-4',
+    id: 'act-5',
     title: 'ML Engineer Candidate Screening',
     subtitle: 'David_Chen_CV.pdf',
     timestamp: '4 hours ago',
@@ -52,13 +61,13 @@ export const mockRecentActivity: RecentActivityItem[] = [
     statusText: '91% Job Fit Score',
   },
   {
-    id: 'act-5',
-    title: 'HR Policy Alignment Review',
-    subtitle: 'Leave_Policy_2025.pdf vs Handbook.pdf',
+    id: 'act-6',
+    title: 'Patient Intake Completeness Audit',
+    subtitle: 'Registration_Packet_MED44.pdf',
     timestamp: 'Yesterday',
     type: 'verification',
     status: 'warning',
-    statusText: '1 Policy Conflict',
+    statusText: 'Missing Policy ID',
   },
 ];
 
@@ -164,7 +173,7 @@ export const mockVerificationResult: VerificationResult = {
   totalDocuments: 2,
   status: 'inconsistencies_detected',
   summaryNote:
-    'High-priority discrepancies identified between the compensation terms, probation duration, and notice stipulations across the provided employment documents.',
+    'High-priority discrepancies identified between the compensation terms, probation duration, and notice stipulations across the provided employment documents. Flagged for human review.',
   reviewedAt: new Date().toLocaleDateString('en-US', {
     month: 'short',
     day: 'numeric',
@@ -265,6 +274,171 @@ export const mockVerificationResult: VerificationResult = {
   ],
 };
 
+/* =========================================================================
+   HEALTHCARE ADMINISTRATION DEMO DATA (NON-CLINICAL ADMINISTRATIVE CHECK)
+   ========================================================================= */
+
+export const mockHealthcareVerificationResult: VerificationResult = {
+  domain: 'Healthcare Administration',
+  totalDocuments: 2,
+  status: 'inconsistencies_detected',
+  summaryNote:
+    'Administrative discrepancies identified between hospital invoice and insurance claim. Medical Record Number (MRN) matched, but itemized billing amount differs by $1,450.00 and admission date shows a 2-day variance. (Administrative check only; no medical diagnosis or treatment advice).',
+  reviewedAt: new Date().toLocaleDateString('en-US', {
+    month: 'short',
+    day: 'numeric',
+    year: 'numeric',
+  }),
+  documentsReviewed: [
+    'Hospital_Inpatient_Invoice_INV-98421.pdf (St. Jude Medical Center)',
+    'Health_Insurance_Claim_CLM-77104.pdf (BlueShield Healthcare)',
+  ],
+  findings: [
+    {
+      id: 'hc-finding-1',
+      title: 'Billed Amount vs Claim Reimbursable Variance',
+      severity: 'high',
+      category: 'billing_reconciliation',
+      explanation:
+        'Hospital Inpatient Invoice lists total charges as $14,250.00 for Room & Board and Surgical Suite, while the submitted Insurance Claim requests $12,800.00, omitting itemized Pharmacy Line #4 ($1,450.00).',
+      sourceA: {
+        documentName: 'Hospital_Inpatient_Invoice_INV-98421.pdf',
+        section: 'Section 4: Itemized Charges & Total',
+        page: 2,
+        extractedValue: 'Total Gross Charges: $14,250.00 (Pharmacy $1,450, Room $7,200, OR $5,600)',
+      },
+      sourceB: {
+        documentName: 'Health_Insurance_Claim_CLM-77104.pdf',
+        section: 'Box 28: Total Charge Claimed',
+        page: 1,
+        extractedValue: 'Total Claimed: $12,800.00 (Excludes Pharmacy Dispensation Code 250)',
+      },
+      recommendedAction:
+        'Cross-check patient ledger line items with billing coding department. Ensure pharmacy dispensation was authorized under secondary insurance pre-approval.',
+      status: 'verified_inconsistency',
+    },
+    {
+      id: 'hc-finding-2',
+      title: 'Inpatient Admission Date Discrepancy',
+      severity: 'high',
+      category: 'service_dates',
+      explanation:
+        'Hospital discharge record lists admission as September 12, 2026, whereas the submitted Health Insurance Claim form states admission on September 14, 2026.',
+      sourceA: {
+        documentName: 'Hospital_Inpatient_Invoice_INV-98421.pdf',
+        section: 'Admission Details & Patient Header',
+        page: 1,
+        extractedValue: 'Date of Admission: 2026-09-12 08:30 EST | Discharge: 2026-09-16 11:00 EST',
+      },
+      sourceB: {
+        documentName: 'Health_Insurance_Claim_CLM-77104.pdf',
+        section: 'Box 18: Hospitalization Dates',
+        page: 1,
+        extractedValue: 'From: 2026-09-14 | To: 2026-09-16 (Total Days: 2)',
+      },
+      recommendedAction:
+        'Verify emergency intake date vs scheduled floor transfer date. Correct claim CMS-1500 box 18 to prevent automatic payer denial.',
+      status: 'flagged',
+    },
+    {
+      id: 'hc-finding-3',
+      title: 'Patient Medical Record Number (MRN) Parity',
+      severity: 'low',
+      category: 'patient_identity',
+      explanation:
+        'MRN #MED-98421 and Patient DOB 1984-06-15 match identically across both documents.',
+      sourceA: {
+        documentName: 'Hospital_Inpatient_Invoice_INV-98421.pdf',
+        section: 'Header Info',
+        page: 1,
+        extractedValue: 'MRN: MED-98421 | Patient: John D. Smith | DOB: 06/15/1984',
+      },
+      sourceB: {
+        documentName: 'Health_Insurance_Claim_CLM-77104.pdf',
+        section: 'Box 1a & 5: Insured & Patient Info',
+        page: 1,
+        extractedValue: 'Patient ID / MRN: MED-98421 | John D. Smith | DOB: 06/15/1984',
+      },
+      recommendedAction:
+        'Patient identity successfully confirmed. No manual audit necessary for demographic fields.',
+      status: 'inconclusive',
+    },
+  ],
+  missingFields: [
+    {
+      id: 'hc-missing-1',
+      fieldName: 'Attending Physician National Provider Identifier (NPI)',
+      expectedIn: 'Hospital_Inpatient_Invoice_INV-98421.pdf',
+      severity: 'critical',
+      detail:
+        'Box 24J / Section 5 names Dr. Sarah Lin, MD, but leaves the 10-digit NPI number field blank.',
+    },
+    {
+      id: 'hc-missing-2',
+      fieldName: 'Prior Authorization Reference Number',
+      expectedIn: 'Health_Insurance_Claim_CLM-77104.pdf',
+      severity: 'moderate',
+      detail:
+        'Inpatient surgical procedure requires Pre-Auth number in Box 23. Field is currently marked as "Pending".',
+    },
+  ],
+};
+
+export const mockHealthcarePatientRegResult: VerificationResult = {
+  domain: 'Healthcare Administration',
+  totalDocuments: 1,
+  status: 'manual_review_required',
+  summaryNote:
+    'Patient Registration Form review completed. Demographic and primary insurance information present, but Emergency Contact Phone Number and HIPAA Authorization Signature Date are missing.',
+  reviewedAt: new Date().toLocaleDateString('en-US', {
+    month: 'short',
+    day: 'numeric',
+    year: 'numeric',
+  }),
+  documentsReviewed: ['Patient_Intake_Registration_Form_MED-44.pdf'],
+  findings: [
+    {
+      id: 'hc-reg-1',
+      title: 'Missing Emergency Contact Contact Details',
+      severity: 'high',
+      category: 'completeness',
+      explanation:
+        'Emergency contact individual name is listed as "Robert Miller (Spouse)", but the telephone number and address fields are empty.',
+      sourceA: {
+        documentName: 'Patient_Intake_Registration_Form_MED-44.pdf',
+        section: 'Section 3: Emergency Contacts',
+        page: 1,
+        extractedValue: 'Contact: Robert Miller (Spouse) | Phone: [BLANK]',
+      },
+      sourceB: {
+        documentName: 'Patient_Intake_Registration_Form_MED-44.pdf',
+        section: 'Section 3: Emergency Contacts',
+        page: 1,
+        extractedValue: 'Secondary Contact: [NOT PROVIDED]',
+      },
+      recommendedAction:
+        'Reception staff must obtain primary emergency phone number prior to patient procedure.',
+      status: 'flagged',
+    },
+  ],
+  missingFields: [
+    {
+      id: 'reg-missing-1',
+      fieldName: 'Emergency Contact Phone Number',
+      expectedIn: 'Patient_Intake_Registration_Form_MED-44.pdf',
+      severity: 'critical',
+      detail: 'Mandatory hospital admission requirement missing in Section 3.',
+    },
+    {
+      id: 'reg-missing-2',
+      fieldName: 'HIPAA Acknowledgment Signature Date',
+      expectedIn: 'Patient_Intake_Registration_Form_MED-44.pdf',
+      severity: 'moderate',
+      detail: 'Signature mark present but date stamp field is unpopulated.',
+    },
+  ],
+};
+
 export const mockHistoryItems: HistoryItem[] = [
   {
     id: 'HIST-101',
@@ -290,6 +464,17 @@ export const mockHistoryItems: HistoryItem[] = [
   },
   {
     id: 'HIST-103',
+    documentName: 'Hospital_Invoice_INV-98421.pdf & Insurance_Claim.pdf',
+    analysisType: 'Healthcare Administration Verification',
+    date: 'Oct 11, 2026',
+    status: 'Inconsistencies Found',
+    summary: 'Itemized billing discrepancy ($14,250 vs $12,800) and admission date variance.',
+    metricBadge: '2 Variances',
+    findingsCount: 2,
+    domain: 'Healthcare Administration',
+  },
+  {
+    id: 'HIST-104',
     documentName: 'Director_Agreement.pdf & Annex.pdf',
     analysisType: 'Employment Document Verification',
     date: 'Oct 11, 2026',
@@ -300,7 +485,7 @@ export const mockHistoryItems: HistoryItem[] = [
     domain: 'Employment & HR',
   },
   {
-    id: 'HIST-104',
+    id: 'HIST-105',
     documentName: 'David_Chen_CV.pdf',
     analysisType: 'Resume & Career Fit',
     date: 'Oct 10, 2026',
@@ -311,26 +496,15 @@ export const mockHistoryItems: HistoryItem[] = [
     domain: 'Data & AI',
   },
   {
-    id: 'HIST-105',
-    documentName: 'Consultant_Engagement_Agreement_v3.pdf',
-    analysisType: 'Employment Document Verification',
-    date: 'Oct 09, 2026',
-    status: 'Inconsistencies Found',
-    summary: 'Intellectual property ownership clause contradicts standard master services policy.',
-    metricBadge: '2 Inconsistencies',
-    findingsCount: 2,
-    domain: 'Employment & HR',
-  },
-  {
     id: 'HIST-106',
-    documentName: 'Priya_Sharma_Product_Resume.pdf',
-    analysisType: 'Resume & Career Fit',
-    date: 'Oct 08, 2026',
-    status: 'Completed',
-    summary: 'Evaluated for Group Product Manager. Excellent roadmap and metrics background.',
-    metricBadge: '78% Fit Score',
-    score: 78,
-    domain: 'Product & Design',
+    documentName: 'Patient_Intake_Registration_Form_MED-44.pdf',
+    analysisType: 'Healthcare Administration Verification',
+    date: 'Oct 09, 2026',
+    status: 'Pending Review',
+    summary: 'Missing emergency contact phone and unsigned HIPAA acknowledgment date.',
+    metricBadge: '2 Missing Fields',
+    findingsCount: 1,
+    domain: 'Healthcare Administration',
   },
   {
     id: 'HIST-107',

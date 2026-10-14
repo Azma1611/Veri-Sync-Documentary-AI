@@ -7,11 +7,11 @@ import {
   Users,
   ChevronRight,
   CheckCircle2,
+  Sparkles,
 } from 'lucide-react';
 import { NoticeBanner } from '../components/common/NoticeBanner';
 
 export const EmploymentHRPage: React.FC = () => {
-
   return (
     <div className="space-y-6 page-enter max-w-6xl mx-auto">
       {/* Notice Banner */}
@@ -19,106 +19,108 @@ export const EmploymentHRPage: React.FC = () => {
 
       {/* Breadcrumb & Domain Header */}
       <div>
-        <div className="flex items-center gap-2 text-xs text-[#64748B] mb-2 font-medium">
-          <Link to="/verify" className="hover:text-[#4338CA] transition-colors">
+        <div className="flex items-center gap-2 text-xs text-[#94A3B8] mb-2 font-medium">
+          <Link to="/verify" className="hover:text-[#62D8FF] transition-colors">
             Domains
           </Link>
-          <ChevronRight className="w-3.5 h-3.5 text-[#94A3B8]" />
-          <span className="font-bold text-[#172554]">Employment & HR</span>
+          <ChevronRight className="w-3.5 h-3.5 text-[#64748B]" />
+          <span className="font-bold text-white">Employment & HR</span>
         </div>
 
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-          <div className="flex items-center gap-3.5">
-            <div className="w-12 h-12 rounded-2xl btn-primary text-white flex items-center justify-center shadow-md">
-              <Users className="w-6 h-6" />
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-6 rounded-3xl glass-panel border border-white/10 shadow-2xl relative overflow-hidden">
+          <div className="flex items-center gap-4 relative z-10">
+            <div className="w-12 h-12 rounded-2xl btn-primary text-white flex items-center justify-center shadow-lg shadow-indigo-500/25 shrink-0">
+              <Users className="w-6 h-6 text-white" />
             </div>
             <div>
-              <div className="flex items-center gap-2">
-                <h1 className="text-2xl font-extrabold text-[#172554] tracking-tight">
+              <div className="flex items-center gap-2.5">
+                <h1 className="text-2xl font-extrabold text-white tracking-tight">
                   Employment & HR
                 </h1>
-                <span className="inline-flex items-center gap-1 text-[10px] font-bold text-teal-700 bg-teal-50 px-2 py-0.5 rounded-full border border-teal-200">
-                  <CheckCircle2 className="w-3 h-3 text-teal-600" />
+                <span className="inline-flex items-center gap-1.5 text-[10px] font-bold text-teal-300 bg-teal-500/15 px-2.5 py-0.5 rounded-full border border-teal-500/30">
+                  <CheckCircle2 className="w-3 h-3 text-teal-400" />
                   Active Domain
                 </span>
               </div>
-              <p className="text-xs text-[#64748B] mt-0.5">
-                Two specialized verification workflows for talent acquisition, contract compliance, and role fit
+              <p className="text-xs sm:text-sm text-[#CBD5E1] mt-1 max-w-xl leading-relaxed">
+                Specialized workflows for cross-referencing employment contracts, validating compensation terms, and benchmarking candidate qualifications.
               </p>
             </div>
           </div>
 
           <Link
             to="/verify"
-            className="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl glass-card border-white/80 hover:bg-white/90 text-xs font-semibold text-[#172554] shadow-sm transition-all self-start sm:self-auto"
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-white/[0.06] border border-white/10 hover:bg-white/10 text-xs font-bold text-white transition-all self-start sm:self-auto z-10"
           >
             <span>Change Domain</span>
           </Link>
+
+          <div className="absolute -right-16 -top-16 w-52 h-52 bg-[#438AFF]/15 rounded-full blur-3xl pointer-events-none" />
         </div>
       </div>
 
       {/* The Two Domain Workflows: Side by Side */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
         {/* Workflow A: Employment Document Verification */}
-        <div className="glass-panel rounded-2xl border border-white/80 hover:border-indigo-300/80 shadow-lg p-6 flex flex-col justify-between transition-all duration-200 hover:shadow-xl relative overflow-hidden group">
-          <div className="absolute top-0 right-0 w-32 h-32 bg-indigo-500/10 rounded-full blur-2xl -mr-10 -mt-10 pointer-events-none" />
+        <div className="glass-panel rounded-2xl border border-white/10 hover:border-[#438AFF]/40 shadow-xl p-6 flex flex-col justify-between transition-all duration-200 hover:shadow-[0_10px_35px_rgba(67,138,255,0.2)] relative overflow-hidden group">
+          <div className="absolute top-0 right-0 w-36 h-36 bg-[#438AFF]/10 rounded-full blur-2xl -mr-10 -mt-10 pointer-events-none" />
 
           <div>
             {/* Header Badge */}
             <div className="flex items-center justify-between mb-4">
-              <div className="w-11 h-11 rounded-xl btn-primary flex items-center justify-center text-white shadow-md">
-                <FileCheck className="w-5 h-5" strokeWidth={2.2} />
+              <div className="w-11 h-11 rounded-xl btn-primary flex items-center justify-center text-white shadow-lg shadow-indigo-500/25">
+                <FileCheck className="w-5 h-5 text-white" strokeWidth={2.2} />
               </div>
-              <span className="text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full bg-indigo-500/10 text-[#4338CA] border border-indigo-200/80 backdrop-blur-sm">
+              <span className="text-[10px] font-extrabold uppercase tracking-wider px-2.5 py-1 rounded-full bg-indigo-500/20 text-[#62D8FF] border border-indigo-400/30">
                 Workflow A
               </span>
             </div>
 
-            <h2 className="text-lg font-extrabold text-[#172554] tracking-tight group-hover:text-[#4338CA] transition-colors">
+            <h2 className="text-lg font-extrabold text-white tracking-tight group-hover:text-[#62D8FF] transition-colors">
               Employment Document Verification
             </h2>
-            <p className="text-xs font-semibold text-[#4338CA] mt-0.5">
+            <p className="text-xs font-semibold text-[#62D8FF] mt-0.5">
               Cross-Document Clause Reconciliation & Compliance Audit
             </p>
-            <p className="text-xs text-[#64748B] mt-2.5 leading-relaxed">
-              Upload offer letters, employment contracts, job descriptions, and HR policies. Cross-checks contractual terms, detects potential discrepancies (base pay, probation, notice period), checks document completeness, and links findings directly to source clauses.
+            <p className="text-xs text-[#CBD5E1] mt-2.5 leading-relaxed">
+              Upload offer letters, employment contracts, and policies. Cross-checks contractual terms, flags compensation mismatches, notice period differences, and missing mandatory attachments.
             </p>
 
-            {/* What's Checked */}
-            <div className="mt-5 space-y-2 pt-4 border-t border-white/60">
+            {/* Verification Capabilities */}
+            <div className="mt-5 space-y-2 pt-4 border-t border-white/10">
               <span className="text-[10px] uppercase font-bold text-[#94A3B8] block">
                 Verification Capabilities:
               </span>
-              <ul className="space-y-1.5 text-xs text-[#172033]">
-                <li className="flex items-start gap-2">
-                  <span className="w-1.5 h-1.5 rounded-full bg-[#4338CA] mt-1.5 shrink-0" />
-                  <span><strong>Required-Field & Completeness:</strong> Validates salary terms, probation, and notice clauses</span>
+              <ul className="space-y-2 text-xs text-[#CBD5E1]">
+                <li className="flex items-start gap-2.5">
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#62D8FF] mt-1.5 shrink-0" />
+                  <span><strong className="text-white">Required-Field Completeness:</strong> Validates salary intervals, probation, and notice clauses</span>
                 </li>
-                <li className="flex items-start gap-2">
-                  <span className="w-1.5 h-1.5 rounded-full bg-[#4338CA] mt-1.5 shrink-0" />
-                  <span><strong>Cross-Document Comparison:</strong> Aligns offer letter clauses against standard contract text</span>
+                <li className="flex items-start gap-2.5">
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#62D8FF] mt-1.5 shrink-0" />
+                  <span><strong className="text-white">Cross-Document Comparison:</strong> Aligns offer letter clauses against standard contract text</span>
                 </li>
-                <li className="flex items-start gap-2">
-                  <span className="w-1.5 h-1.5 rounded-full bg-[#4338CA] mt-1.5 shrink-0" />
-                  <span><strong>Evidence-Linked Inspection:</strong> Exact quoted excerpts with page numbers & side-by-side view</span>
+                <li className="flex items-start gap-2.5">
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#62D8FF] mt-1.5 shrink-0" />
+                  <span><strong className="text-white">Evidence-Linked Citations:</strong> Exact quoted excerpts with page numbers & side-by-side view</span>
                 </li>
-                <li className="flex items-start gap-2">
-                  <span className="w-1.5 h-1.5 rounded-full bg-[#4338CA] mt-1.5 shrink-0" />
-                  <span><strong>Human Review Workflow:</strong> Flag, confirm, or add auditor remarks with report export</span>
+                <li className="flex items-start gap-2.5">
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#62D8FF] mt-1.5 shrink-0" />
+                  <span><strong className="text-white">Human Review Workflow:</strong> Flag, confirm, or accept variances with report export</span>
                 </li>
               </ul>
             </div>
 
             {/* Target Document Types */}
-            <div className="mt-4 pt-3 border-t border-white/60">
-              <span className="text-[10px] uppercase font-bold text-[#94A3B8] block mb-1.5">
+            <div className="mt-4 pt-3.5 border-t border-white/10">
+              <span className="text-[10px] uppercase font-bold text-[#94A3B8] block mb-2">
                 Expected Documents:
               </span>
               <div className="flex flex-wrap gap-1.5">
                 {['Offer Letters', 'Employment Contracts', 'Job Descriptions', 'HR Policies'].map((doc, idx) => (
                   <span
                     key={idx}
-                    className="text-[10px] font-medium px-2 py-0.5 rounded-md bg-white/60 text-[#172554] border border-white/80 shadow-[0_1px_2px_rgba(0,0,0,0.02)]"
+                    className="text-[10px] font-medium px-2.5 py-1 rounded-lg bg-white/[0.05] text-[#CBD5E1] border border-white/10"
                   >
                     {doc}
                   </span>
@@ -127,11 +129,13 @@ export const EmploymentHRPage: React.FC = () => {
             </div>
           </div>
 
-          <div className="mt-6 pt-4 border-t border-white/60 flex items-center justify-between">
-            <span className="text-[11px] text-[#94A3B8] font-medium">Includes demo sample package</span>
+          <div className="mt-6 pt-4 border-t border-white/10 flex items-center justify-between">
+            <span className="text-[11px] text-[#94A3B8] font-medium flex items-center gap-1">
+              <Sparkles className="w-3 h-3 text-[#62D8FF]" /> Demo package included
+            </span>
             <Link
               to="/verify/employment/documents"
-              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl btn-primary text-white text-xs font-bold shadow-md hover:shadow-lg transition-all"
+              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl btn-primary text-white text-xs font-extrabold shadow-lg shadow-indigo-500/25 transition-all hover:scale-105"
             >
               <span>Launch Verification</span>
               <ArrowRight className="w-3.5 h-3.5" />
@@ -140,65 +144,65 @@ export const EmploymentHRPage: React.FC = () => {
         </div>
 
         {/* Workflow B: Resume & Career Fit */}
-        <div className="glass-panel rounded-2xl border border-white/80 hover:border-violet-300/80 shadow-lg p-6 flex flex-col justify-between transition-all duration-200 hover:shadow-xl relative overflow-hidden group">
-          <div className="absolute top-0 right-0 w-32 h-32 bg-violet-500/10 rounded-full blur-2xl -mr-10 -mt-10 pointer-events-none" />
+        <div className="glass-panel rounded-2xl border border-white/10 hover:border-violet-400/40 shadow-xl p-6 flex flex-col justify-between transition-all duration-200 hover:shadow-[0_10px_35px_rgba(139,92,246,0.2)] relative overflow-hidden group">
+          <div className="absolute top-0 right-0 w-36 h-36 bg-violet-500/10 rounded-full blur-2xl -mr-10 -mt-10 pointer-events-none" />
 
           <div>
             {/* Header Badge */}
             <div className="flex items-center justify-between mb-4">
-              <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-violet-600 via-purple-600 to-indigo-600 flex items-center justify-center text-white shadow-md">
-                <TrendingUp className="w-5 h-5" strokeWidth={2.2} />
+              <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-violet-600 via-purple-600 to-indigo-600 flex items-center justify-center text-white shadow-lg shadow-purple-500/25">
+                <TrendingUp className="w-5 h-5 text-white" strokeWidth={2.2} />
               </div>
-              <span className="text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full bg-violet-500/10 text-[#8B5CF6] border border-violet-200/80 backdrop-blur-sm">
+              <span className="text-[10px] font-extrabold uppercase tracking-wider px-2.5 py-1 rounded-full bg-violet-500/20 text-violet-300 border border-violet-400/30">
                 Workflow B
               </span>
             </div>
 
-            <h2 className="text-lg font-extrabold text-[#172554] tracking-tight group-hover:text-[#8B5CF6] transition-colors">
+            <h2 className="text-lg font-extrabold text-white tracking-tight group-hover:text-violet-300 transition-colors">
               Resume & Career Fit
             </h2>
-            <p className="text-xs font-semibold text-[#8B5CF6] mt-0.5">
+            <p className="text-xs font-semibold text-violet-300 mt-0.5">
               Candidate Credential & Role Specification Evaluation
             </p>
-            <p className="text-xs text-[#64748B] mt-2.5 leading-relaxed">
-              Upload candidate resumes and compare them directly against provided job descriptions. Evaluates skill alignment, identifies missing technical competencies, calculates role fit scores, and provides career grade recommendations.
+            <p className="text-xs text-[#CBD5E1] mt-2.5 leading-relaxed">
+              Upload candidate resumes and compare them directly against specific role descriptions. Evaluates verified competencies, isolates skill gaps, and calculates qualification alignment.
             </p>
 
-            {/* What's Checked */}
-            <div className="mt-5 space-y-2 pt-4 border-t border-white/60">
+            {/* Verification Capabilities */}
+            <div className="mt-5 space-y-2 pt-4 border-t border-white/10">
               <span className="text-[10px] uppercase font-bold text-[#94A3B8] block">
                 Verification Capabilities:
               </span>
-              <ul className="space-y-1.5 text-xs text-[#172033]">
-                <li className="flex items-start gap-2">
-                  <span className="w-1.5 h-1.5 rounded-full bg-[#8B5CF6] mt-1.5 shrink-0" />
-                  <span><strong>Skills Extraction:</strong> Automatically isolates technical frameworks, languages, and tools</span>
+              <ul className="space-y-2 text-xs text-[#CBD5E1]">
+                <li className="flex items-start gap-2.5">
+                  <span className="w-1.5 h-1.5 rounded-full bg-violet-400 mt-1.5 shrink-0" />
+                  <span><strong className="text-white">Skills Extraction:</strong> Isolates technical frameworks, languages, and methodologies</span>
                 </li>
-                <li className="flex items-start gap-2">
-                  <span className="w-1.5 h-1.5 rounded-full bg-[#8B5CF6] mt-1.5 shrink-0" />
-                  <span><strong>Skill Gap Analysis:</strong> Distinguishes verified proficiencies from missing requirements</span>
+                <li className="flex items-start gap-2.5">
+                  <span className="w-1.5 h-1.5 rounded-full bg-violet-400 mt-1.5 shrink-0" />
+                  <span><strong className="text-white">Skill Gap Analysis:</strong> Distinguishes verified proficiencies from missing requirements</span>
                 </li>
-                <li className="flex items-start gap-2">
-                  <span className="w-1.5 h-1.5 rounded-full bg-[#8B5CF6] mt-1.5 shrink-0" />
-                  <span><strong>Fit Score Gauge:</strong> Evidence-grounded match percentage with assessment breakdown</span>
+                <li className="flex items-start gap-2.5">
+                  <span className="w-1.5 h-1.5 rounded-full bg-violet-400 mt-1.5 shrink-0" />
+                  <span><strong className="text-white">Fit Score Gauge:</strong> Deterministic match percentage with competency breakdown</span>
                 </li>
-                <li className="flex items-start gap-2">
-                  <span className="w-1.5 h-1.5 rounded-full bg-[#8B5CF6] mt-1.5 shrink-0" />
-                  <span><strong>Role Recommendations:</strong> Suggests adjacent job categories based on extracted skill profiles</span>
+                <li className="flex items-start gap-2.5">
+                  <span className="w-1.5 h-1.5 rounded-full bg-violet-400 mt-1.5 shrink-0" />
+                  <span><strong className="text-white">Role Recommendations:</strong> Suggests adjacent benchmark career paths</span>
                 </li>
               </ul>
             </div>
 
             {/* Target Document Types */}
-            <div className="mt-4 pt-3 border-t border-white/60">
-              <span className="text-[10px] uppercase font-bold text-[#94A3B8] block mb-1.5">
+            <div className="mt-4 pt-3.5 border-t border-white/10">
+              <span className="text-[10px] uppercase font-bold text-[#94A3B8] block mb-2">
                 Expected Documents:
               </span>
               <div className="flex flex-wrap gap-1.5">
                 {['Candidate Resumes (PDF)', 'Target Job Description', 'Competency Matrices'].map((doc, idx) => (
                   <span
                     key={idx}
-                    className="text-[10px] font-medium px-2 py-0.5 rounded-md bg-white/60 text-[#172554] border border-white/80 shadow-[0_1px_2px_rgba(0,0,0,0.02)]"
+                    className="text-[10px] font-medium px-2.5 py-1 rounded-lg bg-white/[0.05] text-[#CBD5E1] border border-white/10"
                   >
                     {doc}
                   </span>
@@ -207,11 +211,13 @@ export const EmploymentHRPage: React.FC = () => {
             </div>
           </div>
 
-          <div className="mt-6 pt-4 border-t border-white/60 flex items-center justify-between">
-            <span className="text-[11px] text-[#94A3B8] font-medium">Supports PDF / DOCX resume parsing</span>
+          <div className="mt-6 pt-4 border-t border-white/10 flex items-center justify-between">
+            <span className="text-[11px] text-[#94A3B8] font-medium flex items-center gap-1">
+              <Sparkles className="w-3 h-3 text-violet-400" /> PDF / DOCX support
+            </span>
             <Link
               to="/verify/employment/resume"
-              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-violet-600 to-purple-600 hover:from-violet-700 hover:to-purple-700 text-white text-xs font-bold shadow-md hover:shadow-lg transition-all"
+              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 text-white text-xs font-extrabold shadow-lg shadow-violet-500/25 transition-all hover:scale-105"
             >
               <span>Launch Fit Analysis</span>
               <ArrowRight className="w-3.5 h-3.5" />

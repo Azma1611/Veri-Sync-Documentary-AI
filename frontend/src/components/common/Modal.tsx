@@ -41,7 +41,7 @@ export const Modal: React.FC<ModalProps> = ({
   }[maxWidth];
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/50 backdrop-blur-sm animate-in fade-in duration-150">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-md animate-in fade-in duration-150">
       <div
         className="fixed inset-0"
         onClick={onClose}
@@ -50,20 +50,20 @@ export const Modal: React.FC<ModalProps> = ({
       <div
         role="dialog"
         aria-modal="true"
-        className={`relative w-full ${maxWidthClasses} glass-modal rounded-3xl overflow-hidden z-10 shadow-2xl animate-in zoom-in-95 duration-150`}
+        className={`relative w-full ${maxWidthClasses} glass-modal rounded-3xl overflow-hidden z-10 shadow-[0_25px_70px_rgba(0,0,0,0.85)] border border-white/15 animate-in zoom-in-95 duration-150`}
       >
-        {/* Header with gradient accent */}
-        <div className="flex items-center justify-between px-5 py-4 border-b border-white/60 bg-gradient-to-r from-indigo-50/70 to-blue-50/50 backdrop-blur-xl">
-          <h3 className="text-sm font-bold text-[#172554]">{title}</h3>
+        {/* Header with dark crystal gradient accent */}
+        <div className="flex items-center justify-between px-6 py-4.5 border-b border-white/10 bg-gradient-to-r from-[#111735] via-[#161F48] to-[#111735]">
+          <h3 className="text-sm font-bold text-white tracking-tight">{title}</h3>
           <button
             onClick={onClose}
-            className="w-7 h-7 flex items-center justify-center rounded-lg text-[#64748B] hover:text-[#172033] hover:bg-white/80 transition-colors"
+            className="w-8 h-8 flex items-center justify-center rounded-xl text-[#94A3B8] hover:text-white hover:bg-white/10 transition-colors"
             aria-label="Close dialog"
           >
             <X className="w-4 h-4" />
           </button>
         </div>
-        <div className="p-5 max-h-[80vh] overflow-y-auto">{children}</div>
+        <div className="p-6 max-h-[80vh] overflow-y-auto text-[#CBD5E1]">{children}</div>
       </div>
     </div>
   );

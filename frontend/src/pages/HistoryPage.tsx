@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Search, Eye, Calendar, FileCheck, TrendingUp, Filter } from 'lucide-react';
+import { Search, Eye, Calendar, FileCheck, TrendingUp, Filter, HeartPulse, Sparkles } from 'lucide-react';
 import { StatusBadge } from '../components/common/StatusBadge';
 import { EmptyState } from '../components/common/EmptyState';
 import { NoticeBanner } from '../components/common/NoticeBanner';
@@ -18,7 +18,9 @@ export const HistoryPage: React.FC = () => {
 
   useEffect(() => {
     let isMounted = true;
-    setIsLoading(true);
+    Promise.resolve().then(() => {
+      if (isMounted) setIsLoading(true);
+    });
     fetchAnalysisHistory({ type: typeFilter, status: statusFilter, searchQuery })
       .then((res) => {
         if (isMounted && res.data) {
@@ -45,44 +47,53 @@ export const HistoryPage: React.FC = () => {
   };
 
   return (
-    <div className="space-y-5 page-enter max-w-7xl mx-auto">
+    <div className="space-y-6 page-enter max-w-7xl mx-auto">
       {/* Notice Banner */}
-      <NoticeBanner message="Searchable demonstration audit archive. Historical records are stored in mock session memory." />
+      <NoticeBanner message="Audit Log Archive: Historical verification logs and cross-document reconciliation records across active domains." />
 
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-        <div>
-          <h1 className="text-2xl font-extrabold text-[#172554] tracking-tight">History</h1>
-          <p className="text-sm text-[#64748B] mt-1">
-            Audit logs and consistency records across previous verification workflows.
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-6 rounded-3xl glass-panel border border-white/10 shadow-2xl relative overflow-hidden">
+        <div className="relative z-10">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-500/20 text-[#62D8FF] border border-indigo-400/30 text-xs font-bold mb-2">
+            <Sparkles className="w-3.5 h-3.5" />
+            <span>Compliance Audit Records</span>
+          </div>
+          <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
+            Verification History
+          </h1>
+          <p className="text-xs sm:text-sm text-[#CBD5E1] mt-1 max-w-xl leading-relaxed">
+            Historical audit records, clause discrepancy findings, and candidate qualification benchmarks.
           </p>
         </div>
-        <div className="flex items-center gap-2 text-xs font-bold text-[#64748B]">
-          <span className="px-3 py-1.5 rounded-full bg-teal-50 text-teal-700 border border-teal-100">
-            {filteredItems.length} records
+
+        <div className="flex items-center gap-2 text-xs font-bold z-10">
+          <span className="px-3.5 py-1.5 rounded-full bg-teal-500/20 text-teal-300 border border-teal-500/30 backdrop-blur-md">
+            {filteredItems.length} Records Indexed
           </span>
         </div>
+
+        <div className="absolute -right-16 -top-16 w-52 h-52 bg-teal-500/15 rounded-full blur-3xl pointer-events-none" />
       </div>
 
       {/* Search and Filters */}
-      <div className="glass-panel rounded-2xl border border-white/80 shadow-md p-4 flex flex-col sm:flex-row items-start sm:items-center gap-3">
+      <div className="glass-panel rounded-2xl border border-white/10 shadow-xl p-4 sm:p-5 flex flex-col sm:flex-row items-start sm:items-center gap-3 backdrop-blur-xl">
         <div className="relative flex-1 w-full">
-          <Search className="w-4 h-4 text-[#94A3B8] absolute left-3 top-1/2 -translate-y-1/2" />
+          <Search className="w-4 h-4 text-[#94A3B8] absolute left-3.5 top-1/2 -translate-y-1/2" />
           <input
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder="Search documents, candidates, or findings..."
-            className="w-full pl-9 pr-3 py-2.5 glass-input text-xs text-[#172554] font-medium placeholder-[#94A3B8] focus:outline-none focus:border-[#4338CA] focus:ring-2 focus:ring-indigo-100 transition-all"
+            placeholder="Search documents, candidates, domain, or findings..."
+            className="w-full pl-10 pr-3 py-2.5 glass-input rounded-xl text-xs text-white font-medium placeholder-[#64748B] focus:outline-none focus:border-[#438AFF] shadow-inner"
           />
         </div>
 
-        <div className="flex items-center gap-2 shrink-0">
-          <Filter className="w-3.5 h-3.5 text-[#94A3B8]" />
+        <div className="flex items-center gap-2.5 shrink-0 w-full sm:w-auto">
+          <Filter className="w-4 h-4 text-[#94A3B8]" />
           <select
             value={typeFilter}
             onChange={(e) => setTypeFilter(e.target.value as any)}
-            className="px-3 py-2.5 glass-input text-xs font-semibold text-[#172554] focus:outline-none focus:border-[#4338CA] focus:ring-2 focus:ring-indigo-100 transition-all"
+            className="px-3 py-2.5 glass-input rounded-xl text-xs font-semibold text-white focus:outline-none focus:border-[#438AFF]"
           >
             <option value="all">All Workflows</option>
             <option value="verification">Document Verification</option>
@@ -92,10 +103,10 @@ export const HistoryPage: React.FC = () => {
           <select
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}
-            className="px-3 py-2.5 glass-input text-xs font-semibold text-[#172554] focus:outline-none focus:border-[#4338CA] focus:ring-2 focus:ring-indigo-100 transition-all"
+            className="px-3 py-2.5 glass-input rounded-xl text-xs font-semibold text-white focus:outline-none focus:border-[#438AFF]"
           >
             <option value="all">All Statuses</option>
-            <option value="Inconsistencies Found">Needs Review</option>
+            <option value="Inconsistencies Found">Review Required</option>
             <option value="Verified">Verified Clean</option>
             <option value="Completed">Completed</option>
           </select>
@@ -104,51 +115,66 @@ export const HistoryPage: React.FC = () => {
 
       {/* Table / Loading State */}
       {isLoading ? (
-        <div className="glass-panel rounded-2xl border border-white/80 shadow-md p-10 text-center">
-          <p className="text-xs font-semibold text-[#64748B] animate-pulse">
-            Syncing audit history records...
+        <div className="glass-panel rounded-2xl border border-white/10 shadow-xl p-12 text-center">
+          <p className="text-xs font-bold text-[#62D8FF] animate-pulse">
+            Syncing audit history records from backend...
           </p>
         </div>
       ) : filteredItems.length > 0 ? (
-        <div className="glass-panel rounded-2xl border border-white/80 shadow-lg overflow-hidden">
+        <div className="glass-panel rounded-3xl border border-white/10 shadow-2xl overflow-hidden backdrop-blur-2xl">
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs">
               <thead>
-                <tr className="bg-white/50 backdrop-blur-md border-b border-white/60 text-[#64748B] text-[10px] uppercase tracking-wider font-bold">
-                  <th className="py-3 px-6">Document / Candidate</th>
-                  <th className="py-3 px-4">Workflow</th>
-                  <th className="py-3 px-4">Date</th>
-                  <th className="py-3 px-4">Status</th>
-                  <th className="py-3 px-6 text-right">Details</th>
+                <tr className="bg-white/[0.04] border-b border-white/10 text-[#94A3B8] text-[10px] uppercase tracking-wider font-bold">
+                  <th className="py-3.5 px-6">Document Batch / Target</th>
+                  <th className="py-3.5 px-4">Workflow Category</th>
+                  <th className="py-3.5 px-4">Date</th>
+                  <th className="py-3.5 px-4">Audit Status</th>
+                  <th className="py-3.5 px-6 text-right">Action</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-white/60">
+              <tbody className="divide-y divide-white/5">
                 {filteredItems.map((item) => (
                   <tr
                     key={item.id}
-                    className="hover:bg-white/60 transition-colors cursor-pointer"
+                    className="hover:bg-white/[0.03] transition-colors cursor-pointer"
                     onClick={() => setSelectedItem(item)}
                   >
                     <td className="py-4 px-6">
-                      <p className="font-bold text-[#172554]">{item.documentName}</p>
-                      <p className="text-[10px] text-[#94A3B8] mt-0.5 truncate max-w-xs">{item.summary}</p>
+                      <p className="font-extrabold text-white text-xs">{item.documentName}</p>
+                      <p className="text-[11px] text-[#94A3B8] mt-0.5 truncate max-w-sm">{item.summary}</p>
                     </td>
                     <td className="py-4 px-4">
-                      <span className={`inline-flex items-center gap-1.5 text-[10px] font-bold px-2 py-1 rounded-full border ${
-                        item.analysisType === 'Employment Document Verification'
-                          ? 'bg-indigo-50/80 text-indigo-700 border-indigo-200/60 backdrop-blur-sm'
-                          : 'bg-violet-50/80 text-violet-700 border-violet-200/60 backdrop-blur-sm'
-                      }`}>
-                        {item.analysisType === 'Employment Document Verification'
-                          ? <FileCheck className="w-3 h-3" />
-                          : <TrendingUp className="w-3 h-3" />
-                        }
-                        {item.analysisType === 'Employment Document Verification' ? 'Verification' : 'Resume Fit'}
+                      <span
+                        className={`inline-flex items-center gap-1.5 text-[10px] font-bold px-2.5 py-1 rounded-full border ${
+                          item.analysisType.includes('Healthcare')
+                            ? 'bg-teal-500/15 text-teal-300 border-teal-500/30'
+                            : item.analysisType === 'Employment Document Verification'
+                            ? 'bg-indigo-500/15 text-[#62D8FF] border border-indigo-500/30'
+                            : 'bg-violet-500/15 text-violet-300 border border-violet-500/30'
+                        }`}
+                      >
+                        {item.analysisType.includes('Healthcare') ? (
+                          <>
+                            <HeartPulse className="w-3 h-3 text-teal-400" />
+                            Healthcare Admin
+                          </>
+                        ) : item.analysisType === 'Employment Document Verification' ? (
+                          <>
+                            <FileCheck className="w-3 h-3 text-[#62D8FF]" />
+                            Employment Verification
+                          </>
+                        ) : (
+                          <>
+                            <TrendingUp className="w-3 h-3 text-violet-400" />
+                            Resume & Career Fit
+                          </>
+                        )}
                       </span>
                     </td>
                     <td className="py-4 px-4">
-                      <div className="flex items-center gap-1.5 text-[11px] text-[#64748B]">
-                        <Calendar className="w-3 h-3 text-[#94A3B8]" />
+                      <div className="flex items-center gap-1.5 text-[11px] text-[#CBD5E1] font-mono">
+                        <Calendar className="w-3.5 h-3.5 text-[#94A3B8]" />
                         {item.date}
                       </div>
                     </td>
@@ -158,11 +184,14 @@ export const HistoryPage: React.FC = () => {
                     <td className="py-4 px-6 text-right">
                       <button
                         type="button"
-                        onClick={(e) => { e.stopPropagation(); setSelectedItem(item); }}
-                        className="inline-flex items-center gap-1.5 text-xs font-bold text-[#4338CA] hover:text-[#172554] px-3 py-1.5 rounded-xl hover:bg-indigo-50/60 transition-colors"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setSelectedItem(item);
+                        }}
+                        className="inline-flex items-center gap-1.5 text-xs font-bold text-[#62D8FF] hover:text-white px-3 py-1.5 rounded-xl hover:bg-white/10 transition-colors"
                       >
                         <Eye className="w-3.5 h-3.5" />
-                        View
+                        <span>Inspect</span>
                       </button>
                     </td>
                   </tr>
@@ -188,34 +217,37 @@ export const HistoryPage: React.FC = () => {
           title={`Audit Record: ${selectedItem.id}`}
         >
           <div className="space-y-4">
-            <div className="p-4 rounded-xl glass-card border border-white/80 shadow-sm">
-              <span className="text-[10px] uppercase font-bold text-[#64748B] tracking-wider block mb-1.5">
+            <div className="p-4 rounded-xl bg-black/40 border border-white/10">
+              <span className="text-[10px] uppercase font-bold text-[#94A3B8] tracking-wider block mb-1">
                 Document Batch
               </span>
-              <h4 className="text-sm font-bold text-[#172554]">{selectedItem.documentName}</h4>
-              <p className="text-xs text-[#64748B] mt-1 leading-relaxed">{selectedItem.summary}</p>
+              <h4 className="text-sm font-extrabold text-white">{selectedItem.documentName}</h4>
+              <p className="text-xs text-[#CBD5E1] mt-1.5 leading-relaxed">{selectedItem.summary}</p>
             </div>
 
             <div className="grid grid-cols-2 gap-3">
               {[
                 { label: 'Workflow', value: selectedItem.analysisType },
-                { label: 'Date', value: selectedItem.date },
-                { label: 'Domain', value: selectedItem.domain },
-                { label: 'Status', value: selectedItem.status },
+                { label: 'Audit Date', value: selectedItem.date },
+                { label: 'Target Domain', value: selectedItem.domain },
+                { label: 'Audit Status', value: selectedItem.status },
               ].map(({ label, value }) => (
-                <div key={label} className="p-3 rounded-xl border border-white/80 glass-card shadow-sm">
-                  <span className="text-[10px] font-bold text-[#94A3B8] uppercase tracking-wider block mb-1">{label}</span>
-                  <span className="text-xs font-semibold text-[#172554]">{value}</span>
+                <div key={label} className="p-3 rounded-xl border border-white/10 bg-white/[0.04]">
+                  <span className="text-[10px] font-bold text-[#94A3B8] uppercase tracking-wider block mb-1">
+                    {label}
+                  </span>
+                  <span className="text-xs font-bold text-white">{value}</span>
                 </div>
               ))}
             </div>
 
-            <div className="flex justify-end pt-1">
+            <div className="flex justify-end pt-2">
               <button
+                type="button"
                 onClick={() => setSelectedItem(null)}
-                className="px-5 py-2 rounded-xl btn-primary text-white text-xs font-bold shadow-sm"
+                className="px-5 py-2.5 rounded-xl btn-primary text-white text-xs font-bold shadow-lg"
               >
-                Close
+                Close Audit Record
               </button>
             </div>
           </div>

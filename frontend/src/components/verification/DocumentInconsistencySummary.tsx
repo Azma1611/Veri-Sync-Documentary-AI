@@ -1,9 +1,5 @@
 import React from 'react';
-import {
-  AlertCircle,
-  FileQuestion,
-  FileText,
-} from 'lucide-react';
+import { AlertCircle, FileQuestion, FileText } from 'lucide-react';
 import type { VerificationResult } from '../../types';
 
 interface DocumentInconsistencySummaryProps {
@@ -15,66 +11,71 @@ export const DocumentInconsistencySummary: React.FC<DocumentInconsistencySummary
 }) => {
   const highCount = result.findings.filter((f) => f.severity === 'high').length;
   const mediumCount = result.findings.filter((f) => f.severity === 'medium').length;
+  const lowCount = result.findings.filter((f) => f.severity === 'low').length;
 
   return (
     <div className="space-y-4">
       {/* Primary Status Banner */}
-      <div className="p-4 sm:p-5 rounded-xl bg-white border border-[#E6EAF0] shadow-2xs flex flex-col md:flex-row md:items-center justify-between gap-4">
-        <div className="flex items-start gap-3">
-          <div className="w-10 h-10 rounded-lg bg-[#C2414B]/10 border border-[#C2414B]/20 flex items-center justify-center text-[#C2414B] shrink-0">
-            <AlertCircle className="w-5 h-5" />
+      <div className="p-5 sm:p-6 rounded-2xl glass-panel border border-white/10 shadow-xl flex flex-col md:flex-row md:items-center justify-between gap-5 relative overflow-hidden">
+        <div className="flex items-start gap-3.5">
+          <div className="w-11 h-11 rounded-xl bg-amber-500/20 border border-amber-500/40 flex items-center justify-center text-amber-300 shrink-0 shadow-[0_0_15px_rgba(251,191,36,0.25)]">
+            <AlertCircle className="w-6 h-6" />
           </div>
           <div>
-            <div className="flex items-center gap-2 flex-wrap mb-1">
-              <span className="text-sm font-bold text-[#182230]">
+            <div className="flex items-center gap-2.5 flex-wrap mb-1.5">
+              <span className="text-base font-extrabold text-white tracking-tight">
                 {result.findings.length} Potential Inconsistencies Detected
               </span>
-              <span className="text-3xs font-semibold px-2 py-0.5 rounded bg-[#C2414B]/10 text-[#C2414B] border border-[#C2414B]/20">
+              <span className="text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/30">
                 Action Required
               </span>
             </div>
-            <p className="text-xs text-[#667085] max-w-2xl leading-relaxed">
+            <p className="text-xs text-[#CBD5E1] max-w-2xl leading-relaxed">
               {result.summaryNote}
             </p>
-            <div className="mt-2 flex items-center gap-2 text-3xs text-[#98A2B3] font-medium">
+            <div className="mt-2.5 flex items-center gap-2 text-[11px] text-[#94A3B8] font-medium">
               <span>Reviewed on: {result.reviewedAt}</span>
               <span>•</span>
-              <span>Domain: {result.domain}</span>
+              <span className="text-[#62D8FF]">Domain: {result.domain}</span>
             </div>
           </div>
         </div>
 
         {/* Severity Metrics Pills */}
-        <div className="flex items-center gap-2.5 shrink-0 self-start md:self-center">
-          <div className="px-3 py-2 rounded-lg bg-[#C2414B]/8 border border-[#C2414B]/20 text-center">
-            <span className="text-base font-bold text-[#C2414B] block">{highCount}</span>
-            <span className="text-3xs uppercase font-semibold text-[#C2414B]">High Severity</span>
+        <div className="flex items-center gap-2 shrink-0 self-start md:self-center">
+          <div className="px-3 py-2 rounded-xl bg-red-950/40 border border-red-500/30 text-center min-w-[60px]">
+            <span className="text-base font-extrabold text-red-300 block">{highCount}</span>
+            <span className="text-[9px] uppercase font-bold text-red-400">High</span>
           </div>
-          <div className="px-3 py-2 rounded-lg bg-[#B7791F]/8 border border-[#B7791F]/20 text-center">
-            <span className="text-base font-bold text-[#B7791F] block">{mediumCount}</span>
-            <span className="text-3xs uppercase font-semibold text-[#B7791F]">Medium</span>
+          <div className="px-3 py-2 rounded-xl bg-amber-950/40 border border-amber-500/30 text-center min-w-[60px]">
+            <span className="text-base font-extrabold text-amber-300 block">{mediumCount}</span>
+            <span className="text-[9px] uppercase font-bold text-amber-400">Med</span>
           </div>
-          <div className="px-3 py-2 rounded-lg bg-[#F2F4F7] border border-[#E6EAF0] text-center">
-            <span className="text-base font-bold text-[#667085] block">
+          <div className="px-3 py-2 rounded-xl bg-blue-950/40 border border-blue-500/30 text-center min-w-[60px]">
+            <span className="text-base font-extrabold text-blue-300 block">{lowCount}</span>
+            <span className="text-[9px] uppercase font-bold text-blue-400">Low</span>
+          </div>
+          <div className="px-3 py-2 rounded-xl bg-white/[0.05] border border-white/10 text-center min-w-[60px]">
+            <span className="text-base font-extrabold text-white block">
               {result.missingFields.length}
             </span>
-            <span className="text-3xs uppercase font-semibold text-[#667085]">Missing</span>
+            <span className="text-[9px] uppercase font-bold text-[#94A3B8]">Missing</span>
           </div>
         </div>
       </div>
 
       {/* Reviewed Documents Pills */}
-      <div className="p-3.5 rounded-lg bg-white border border-[#E6EAF0] text-xs shadow-2xs">
-        <span className="font-semibold text-[#667085] uppercase tracking-wider text-3xs block mb-1.5">
+      <div className="p-4 rounded-xl glass-card border border-white/10 text-xs">
+        <span className="font-bold text-[#94A3B8] uppercase tracking-wider text-[10px] block mb-2">
           Documents Cross-Referenced in Batch:
         </span>
         <div className="flex flex-wrap gap-2">
           {result.documentsReviewed.map((doc, idx) => (
             <span
               key={idx}
-              className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-[#F8F9FC] text-[#182230] border border-[#E6EAF0] text-2xs font-medium"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-black/40 text-[#CBD5E1] border border-white/10 text-xs font-semibold"
             >
-              <FileText className="w-3 h-3 text-[#4361EE]" />
+              <FileText className="w-3.5 h-3.5 text-[#62D8FF]" />
               {doc}
             </span>
           ))}
@@ -83,27 +84,29 @@ export const DocumentInconsistencySummary: React.FC<DocumentInconsistencySummary
 
       {/* Missing Essential Information */}
       {result.missingFields.length > 0 && (
-        <div className="p-4 rounded-xl bg-white border border-[#B7791F]/30 shadow-2xs space-y-2.5">
+        <div className="p-5 rounded-2xl glass-panel border border-amber-500/30 space-y-3">
           <div className="flex items-center gap-2">
-            <FileQuestion className="w-4 h-4 text-[#B7791F]" />
-            <h4 className="text-xs sm:text-sm font-bold text-[#182230]">
-              Missing Clauses & Attachments ({result.missingFields.length})
+            <FileQuestion className="w-4 h-4 text-amber-400" />
+            <h4 className="text-xs sm:text-sm font-extrabold text-white">
+              Missing Mandatory Clauses & Expected Fields ({result.missingFields.length})
             </h4>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3.5">
             {result.missingFields.map((field) => (
               <div
                 key={field.id}
-                className="p-3 rounded-lg bg-[#FDF9F2] border border-[#F2E7D3]"
+                className="p-3.5 rounded-xl bg-amber-950/20 border border-amber-500/30"
               >
                 <div className="flex items-center justify-between mb-1">
-                  <span className="text-xs font-semibold text-[#182230]">{field.fieldName}</span>
-                  <span className="text-3xs uppercase font-bold px-1.5 py-0.2 rounded bg-[#B7791F]/15 text-[#B7791F]">
+                  <span className="text-xs font-bold text-white">{field.fieldName}</span>
+                  <span className="text-[9px] uppercase font-extrabold px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-300 border border-amber-500/30">
                     {field.severity}
                   </span>
                 </div>
-                <p className="text-3xs text-[#667085] mb-1">Expected in: {field.expectedIn}</p>
-                <p className="text-xs text-[#182230] leading-relaxed">{field.detail}</p>
+                <p className="text-[10px] text-[#94A3B8] mb-1">
+                  Expected in: <span className="text-white font-medium">{field.expectedIn}</span>
+                </p>
+                <p className="text-xs text-[#CBD5E1] leading-relaxed">{field.detail}</p>
               </div>
             ))}
           </div>

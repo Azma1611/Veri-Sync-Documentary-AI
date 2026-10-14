@@ -1,20 +1,29 @@
 import React from 'react';
 import { FileText, X, CheckCircle2 } from 'lucide-react';
-import type { UploadedFileItem, EmploymentDocType } from '../../types';
+import type { UploadedFileItem, GenericDocType } from '../../types';
 
 interface FileListProps {
   files: UploadedFileItem[];
   onRemoveFile: (id: string) => void;
-  onDocTypeChange?: (id: string, docType: EmploymentDocType) => void;
+  onDocTypeChange?: (id: string, docType: GenericDocType) => void;
   showDocTypeSelector?: boolean;
+  domain?: string;
 }
 
-const docTypeLabels: Record<EmploymentDocType, string> = {
+const employmentLabels: Record<string, string> = {
   offer_letter: 'Offer Letter',
   contract: 'Employment Contract',
   job_description: 'Job Description',
-  hr_policy: 'HR Policy',
-  other: 'Other Document',
+  hr_policy: 'HR Policy / Handbook',
+  other: 'Other Supporting Document',
+};
+
+const healthcareLabels: Record<string, string> = {
+  patient_registration: 'Patient Registration Form',
+  hospital_invoice: 'Hospital Inpatient Invoice',
+  insurance_claim: 'Health Insurance Claim',
+  discharge_summary: 'Inpatient Discharge Summary',
+  other: 'Other Medical Record',
 };
 
 export const FileList: React.FC<FileListProps> = ({
@@ -22,8 +31,11 @@ export const FileList: React.FC<FileListProps> = ({
   onRemoveFile,
   onDocTypeChange,
   showDocTypeSelector = false,
+  domain = 'employment-hr',
 }) => {
   if (files.length === 0) return null;
+
+  const docTypeLabels = domain === 'healthcare-admin' ? healthcareLabels : employmentLabels;
 
   const formatFileSize = (bytes: number): string => {
     if (bytes < 1024) return `${bytes} B`;
@@ -32,58 +44,65 @@ export const FileList: React.FC<FileListProps> = ({
   };
 
   return (
-    <div className="space-y-2">
+    <div className="space-y-2.5">
       <div className="flex items-center justify-between">
-        <span className="text-[10px] font-bold text-[#64748B] uppercase tracking-wider">
-          Attached ({files.length})
+        <span className="text-[11px] font-bold text-[#94A3B8] uppercase tracking-wider">
+          Attached Documents ({files.length})
         </span>
-        <span className="text-[10px] text-[#94A3B8]">Ready to process</span>
+        <span className="text-[11px] text-teal-400 font-semibold flex items-center gap-1">
+          <CheckCircle2 className="w-3 h-3 text-teal-400" />
+          Ready to verify
+        </span>
       </div>
 
-      <div className="space-y-1.5">
+      <div className="space-y-2">
         {files.map((item) => (
           <div
             key={item.id}
-            className="flex items-center justify-between p-3 rounded-xl bg-indigo-50/50 border border-indigo-100 text-xs gap-3 hover:bg-indigo-50 hover:border-indigo-200 transition-colors"
+            className="flex items-center justify-between p-3 rounded-xl bg-white/[0.04] border border-white/10 text-xs gap-3 hover:bg-white/[0.08] hover:border-white/20 transition-all backdrop-blur-md"
           >
-            <div className="flex items-center gap-2.5 min-w-0">
-              <div className="w-7 h-7 rounded-lg bg-white border border-indigo-100 flex items-center justify-center shrink-0 shadow-sm">
-                <FileText className="w-3.5 h-3.5 text-[#4338CA]" />
+            <div className="flex items-center gap-3 min-w-0">
+              <div className="w-8 h-8 rounded-lg bg-[#438AFF]/20 border border-[#438AFF]/30 flex items-center justify-center shrink-0 shadow-sm">
+                <FileText className="w-4 h-4 text-[#62D8FF]" />
               </div>
               <div className="min-w-0">
-                <p className="font-semibold text-[#172554] truncate text-xs" title={item.name}>
+                <p className="font-semibold text-white truncate text-xs" title={item.name}>
                   {item.name}
                 </p>
-                <p className="text-[10px] text-[#64748B]">{formatFileSize(item.size)}</p>
+                <div className="flex items-center gap-2 mt-0.5">
+                  <span className="text-[10px] text-[#94A3B8]">{formatFileSize(item.size)}</span>
+                  {item.docType && (
+                    <span className="text-[10px] px-1.5 py-0.2 rounded bg-indigo-500/20 text-[#62D8FF] border border-indigo-400/25">
+                      {docTypeLabels[item.docType] || item.docType}
+                    </span>
+                  )}
+                </div>
               </div>
             </div>
 
             <div className="flex items-center gap-2 shrink-0">
-              <CheckCircle2 className="w-3.5 h-3.5 text-[#0D9488]" />
-
               {showDocTypeSelector && onDocTypeChange && (
                 <select
-                  value={item.docType || 'offer_letter'}
-                  onChange={(e) =>
-                    onDocTypeChange(item.id, e.target.value as EmploymentDocType)
-                  }
-                  className="text-[10px] bg-white border border-indigo-100 rounded-lg px-2 py-1 text-[#172554] font-medium focus:outline-none focus:border-[#4338CA] shadow-sm"
+                  value={item.docType || (domain === 'healthcare-admin' ? 'hospital_invoice' : 'offer_letter')}
+                  onChange={(e) => onDocTypeChange(item.id, e.target.value)}
+                  className="text-[11px] bg-[#0C122C] border border-white/15 rounded-lg px-2.5 py-1 text-white font-medium focus:outline-none focus:border-[#438AFF] shadow-sm"
                 >
-                  <option value="offer_letter">{docTypeLabels.offer_letter}</option>
-                  <option value="contract">{docTypeLabels.contract}</option>
-                  <option value="job_description">{docTypeLabels.job_description}</option>
-                  <option value="hr_policy">{docTypeLabels.hr_policy}</option>
-                  <option value="other">{docTypeLabels.other}</option>
+                  {Object.entries(docTypeLabels).map(([val, label]) => (
+                    <option key={val} value={val}>
+                      {label}
+                    </option>
+                  ))}
                 </select>
               )}
 
               <button
                 type="button"
                 onClick={() => onRemoveFile(item.id)}
-                className="w-6 h-6 flex items-center justify-center text-[#64748B] hover:text-red-600 rounded-lg hover:bg-red-50 transition-colors"
-                title="Remove file"
+                className="w-7 h-7 flex items-center justify-center text-[#94A3B8] hover:text-red-400 rounded-lg hover:bg-red-500/15 transition-colors"
+                title="Remove document"
+                aria-label={`Remove ${item.name}`}
               >
-                <X className="w-3.5 h-3.5" />
+                <X className="w-4 h-4" />
               </button>
             </div>
           </div>

@@ -10,8 +10,11 @@ export type CareerDomain =
 
 export type DocumentDomain =
   | 'employment-hr'
-  | 'legal-contracts'
-  | 'procurement-finance';
+  | 'healthcare-admin'
+  | 'education'
+  | 'government-public'
+  | 'banking-finance'
+  | 'business-legal';
 
 export type EmploymentDocType =
   | 'offer_letter'
@@ -20,13 +23,22 @@ export type EmploymentDocType =
   | 'hr_policy'
   | 'other';
 
+export type HealthcareDocType =
+  | 'patient_registration'
+  | 'hospital_invoice'
+  | 'insurance_claim'
+  | 'discharge_summary'
+  | 'other';
+
+export type GenericDocType = EmploymentDocType | HealthcareDocType | string;
+
 export interface UploadedFileItem {
   id: string;
   file: File;
   name: string;
   size: number;
   type: string;
-  docType?: EmploymentDocType;
+  docType?: GenericDocType;
   uploadedAt: Date;
 }
 
@@ -66,7 +78,16 @@ export interface InconsistencyFinding {
   id: string;
   title: string;
   severity: InconsistencySeverity;
-  category: 'compensation' | 'probation_period' | 'notice_period' | 'roles_responsibilities' | 'benefits';
+  category:
+    | 'compensation'
+    | 'probation_period'
+    | 'notice_period'
+    | 'roles_responsibilities'
+    | 'benefits'
+    | 'billing_reconciliation'
+    | 'service_dates'
+    | 'patient_identity'
+    | string;
   explanation: string;
   sourceA: {
     documentName: string;
@@ -106,7 +127,7 @@ export interface VerificationResult {
 export interface HistoryItem {
   id: string;
   documentName: string;
-  analysisType: 'Resume & Career Fit' | 'Employment Document Verification';
+  analysisType: 'Resume & Career Fit' | 'Employment Document Verification' | 'Healthcare Administration Verification';
   date: string;
   status: 'Completed' | 'Inconsistencies Found' | 'Verified' | 'Pending Review';
   summary: string;
